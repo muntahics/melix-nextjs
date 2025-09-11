@@ -30,7 +30,7 @@ export default function ActorsDetails({birthday, deathday, id, name, also_known_
                     <h1 className="text-amber-50 text-2xl font-bold font-mono mt-3 self-start">{name}</h1>
                     {instaId&&<span className="block text-gray-300"><Link href={`https://instagram.com/${instaId}`} target="__blank"><Image src="/insta.png" alt="Insta Id" width={50} height={50}/></Link></span>} 
                     {also_known_as&&<span className="block text-gray-300">Known As: {also_known_as}</span>} 
-                    {deathday && `<span className="block text-gray-300">Died: ${FormatDate(deathday)}</span>`}
+                    {deathday && <span className="block text-gray-300">Died: ${FormatDate(deathday)}</span>}
                     {birthday&&<span className="block text-gray-300">Born: {FormatDate(birthday)}</span>} 
                     {birthday&&<span className="block text-gray-300">Age: {currentYear - Number(birthday.slice(0,4))}</span>} 
                      
