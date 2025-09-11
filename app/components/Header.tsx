@@ -49,7 +49,8 @@ export default function Header(){
         </button>
       </form>
               </div>
-                <Link href="/"><span className="text-white text-xl font-bold block">Movies</span></Link>
+                <Link href="/"><span className="text-white text-xl font-bold block">Home</span></Link>
+                <Link href="/movie"><span className="text-white text-xl font-bold block">Movies</span></Link>
                 <Link href="/tvshows"><span className="text-white text-xl font-bold block">Tv-Shows</span></Link>
                 <Link href="/actors"><span className="text-white text-xl font-bold block">Actors</span></Link>
               </div>
@@ -58,7 +59,8 @@ export default function Header(){
 
             </div>
               {isActiveMenu && <div className=" flex-col flex justify-center items-center w-full gap-3">
-                <Link href="/"><span className="text-white text-xl font-bold block">Movies</span></Link>
+                <Link href="/"><span className="text-white text-xl font-bold block">Home</span></Link>
+                <Link href="/movie"><span className="text-white text-xl font-bold block">Movies</span></Link>
                 <Link href="/tvshows"><span className="text-white text-xl font-bold block">Tv-Shows</span></Link>
                 <Link href="/actors"><span className="text-white text-xl font-bold block">Actors</span></Link>
                 <form onSubmit={handleSearch} className="mb-4 flex gap-2">
