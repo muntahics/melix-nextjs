@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Header from "./components/header";
+import Header from "./components/Header";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -27,9 +27,10 @@ export default function RootLayout({
   
   return (
     <html lang="en">
-      <body>
+      <body className="bg-slate-900  text-amber-50">
         <Header></Header>
-        {children}
+          {children}
+
       </body>
     </html>
   );

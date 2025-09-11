@@ -1,23 +1,13 @@
 import MovieCard from "./components/MovieCard";
 import type { JSX } from "react";
+import Fetch from "./utilities/Fetch";
 
 export default async function Home() {
 
-  const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0Nzc2NjJjZWFiMGVmNWQ2MmJiODEzZTVjMmZjMzI2MiIsIm5iZiI6MTYyNzczOTQ5OC43NjE5OTk4LCJzdWIiOiI2MTA1NTU2YWVlNDNlODAwNWUzN2VkYzQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.qoxwkY2hUynCBwpOQrRDNjRIwZfadirE5tpCU4ffGx4'
-  }
-};
 
-const data = await fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options)
-  .then(res => res.json())
-  .catch(err => console.error(err));
-
-const genreData = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
-                        .then(res => res.json())
-                        .catch(err => console.error(err))  
+const data = await Fetch(`https://api.themoviedb.org/3/movie/popular`)
+const genreData = await Fetch('https://api.themoviedb.org/3/genre/movie/list?language=en')
+ 
 const genres = genreData.genres
   
   type Movie = {
@@ -41,7 +31,7 @@ const genres = genreData.genres
 // console.log(movies)
   return (
     <>
-      <div className="flex flex-row flex-wrap gap-10 justify-center items-baseline mt-8">
+      <div className="flex flex-row flex-wrap gap-10 justify-center items-stretch mt-8">
         {movies.map((movie:Movie):JSX.Element=>(
         <MovieCard 
           key={movie.id}
