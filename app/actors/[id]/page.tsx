@@ -7,14 +7,23 @@ type ParamsProps = {
     params: {id: number}
 }
 
+export async function generateMetadata({ params }:ParamsProps) {
+  const {id} = await params
+  const details = await Fetch(`https://api.themoviedb.org/3/person/${id}`)
+    return {
+    title: details.name,
+    description: `Actor Details`
+  };
+}
+
 export default async function ActorsDetailsPage({params}:ParamsProps):Promise<JSX.Element>{
     const { id } = await params
     const details = await Fetch(`https://api.themoviedb.org/3/person/${id}`)
     const credits = await Fetch(`https://api.themoviedb.org/3/person/${id}/combined_credits`)
-    const genreData = await Fetch('https://api.themoviedb.org/3/genre/tv/list?language=en')
+    const external = await Fetch(`https://api.themoviedb.org/3/person/${id}/external_ids`)
     // const genres = genreData.genres
     const known_for = credits.cast.sort((a:any, b:any) => b.popularity - a.popularity).slice(0,18)
-    // console.log(known_for)
+    // console.log(external.instagram_id)
     
     return(
         <ActorsDetails 
@@ -28,6 +37,7 @@ export default async function ActorsDetailsPage({params}:ParamsProps):Promise<JS
             profile_path={details.profile_path}
             biography = {details.biography}
             known_for = {known_for}
+            instaId = {external.instagram_id}
         />
     )
 }

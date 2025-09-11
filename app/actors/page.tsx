@@ -2,6 +2,13 @@ import type { JSX } from "react"
 import Fetch from "@/app/utilities/Fetch"
 import ActorsCard from "../components/ActorsCard"
 
+export async function generateMetadata() {
+    return {
+    title: `Actors`,
+    description: `Tv-Show Details`
+  };
+}
+
 export default async function ActorsPage():Promise<JSX.Element>{
     const details = await Fetch(`https://api.themoviedb.org/3/person/popular`)
     const actors = details.results

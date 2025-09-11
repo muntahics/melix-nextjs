@@ -27,9 +27,9 @@ const humanReadableRelease = `${day} ${month}, ${year}`;
 
     
     return(
-        <div className="rounded-2xl border-4 border-gray-500 px-2 py-2 text-black dark:text-amber-100 shadow-2xl hover:transition-transform transition-discrete duration-300 ease-in-out delay-150 hover:scale-105">
+        <div className="rounded-2xl border-4 border-gray-500 px-2 py-2 text-amber-50 shadow-2xl hover:transition-transform transition-discrete duration-300 ease-in-out delay-150 hover:scale-105">
             <Link href={`/tvshows/${tmdb_id}/season/${season_number}/episode/${episode_number}`}>
-                <Image className="rounded-2xl" src={`https://image.tmdb.org/t/p/w500/${poster}`} alt="name" width={250} height={300}></Image>
+                <Image className="rounded-2xl" src={poster===null?`/placehold1280x720.png`:`https://image.tmdb.org/t/p/w500/${poster}`} alt="name" width={250} height={300}></Image>
                 <h2 className="mt-2 block text-center max-w-[250px] text-lg">{title}</h2>
                 <h2 className="mt-2 block text-center max-w-[250px] text-lg">{episode_number}</h2>
            

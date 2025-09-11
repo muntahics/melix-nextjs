@@ -2,6 +2,13 @@ import TvCard from "../components/TvCard";
 import type { JSX } from "react";
 import Fetch from "../utilities/Fetch";
 
+export async function generateMetadata() {
+    return {
+    title: `Tv-Shows`,
+    description: `Tv Shows Page`
+  };
+}
+
 export default async function TvShowsPage(){
     const data = await Fetch(`https://api.themoviedb.org/3/tv/popular`)
     const genreData = await Fetch('https://api.themoviedb.org/3/genre/tv/list?language=en')

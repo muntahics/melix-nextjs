@@ -6,6 +6,15 @@ type ParamsProps={
     params: {id: number}
 }
 
+export async function generateMetadata({ params }:ParamsProps) {
+  const {id} = await params
+  const details = await Fetch(`https://api.themoviedb.org/3/movie/${id}`)
+    return {
+    title: details.title,
+    description: `Movies View`
+  };
+}
+
 export default async function MovieViewPage({params}:ParamsProps):Promise<JSX.Element>{
     const {id}= await params
     const movie = await Fetch(`https://api.themoviedb.org/3/movie/${id}`)

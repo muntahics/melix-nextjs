@@ -3,6 +3,14 @@ import Image from "next/image";
 import Fetch from "../utilities/Fetch";
 import SearchCard from "../components/SearchCard";
 
+export async function generateMetadata() {
+  
+    return {
+    title: `Search`,
+    description: `Search Page`
+  };
+}
+
 export default async function SearchPage({ searchParams }: { searchParams: { query?: string } }) {
   const {query} = await searchParams || "";
 // console.log(searchParams)
