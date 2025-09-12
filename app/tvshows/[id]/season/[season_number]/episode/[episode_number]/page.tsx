@@ -22,8 +22,8 @@ export default async function EpisodeViewPage({params}:ParamsProps):Promise<JSX.
     const {id, season_number, episode_number} = await params
     const details = await Fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_number}`)
     const tv = await Fetch(`https://api.themoviedb.org/3/tv/${id}`)
-        const episodes = details.episodes.filter((item:any)=>item.episode_type==='standard')
-    console.log(tv.name)
+        const episodes = details.episodes
+    // console.log(tv.name)
     
     return(
         <>

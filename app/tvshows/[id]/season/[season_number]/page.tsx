@@ -18,7 +18,7 @@ export async function generateMetadata({ params }:ParamsProps) {
 export default async function MovieDetailsPage({params}:ParamsProps): Promise<JSX.Element>{
     const {id,season_number} = await params
     const details = await Fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season_number}`)
-    const episodes = details.episodes.filter((item:any)=>item.episode_type==='standard')
+    const episodes = details.episodes
     // console.log(episodes)
     return(
         <div className="flex flex-row flex-wrap gap-10 justify-center items-stretch mt-8">
