@@ -5,6 +5,7 @@ type Options = {
         accept: string;
         Authorization: string;
     };
+    
 }
 
 const options: Options = {
@@ -12,7 +13,8 @@ const options: Options = {
   headers: {
     accept: 'application/json',
     Authorization: `Bearer ${process.env.TMDB_API_KEY}`
-  }
+  },
+  
 };
 
 export default async function Fetch(url:string){
