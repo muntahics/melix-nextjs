@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
-import RegisterSW from "./register-sw";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -29,7 +28,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-slate-900  text-amber-50">
-        <RegisterSW />
         <Header></Header>
           {children}
 
