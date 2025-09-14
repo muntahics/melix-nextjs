@@ -5,6 +5,9 @@ type Options = {
         accept: string;
         Authorization: string;
     };
+    next: {
+    revalidate: number; // ISR in seconds
+  };
     
 }
 
@@ -14,6 +17,9 @@ const options: Options = {
     accept: 'application/json',
     Authorization: `Bearer ${process.env.TMDB_API_KEY}`
   },
+  next: {
+    revalidate: 3600,
+  }
   
 };
 
