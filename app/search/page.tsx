@@ -1,7 +1,26 @@
-// app/search/page.tsx
-import Image from "next/image";
+
 import Fetch from "../utilities/Fetch";
 import SearchCard from "../components/SearchCard";
+
+type BaseMedia = {
+  id: number
+  media_type: 'movie' | 'tv' | 'person';
+  popularity: number;
+  vote_count: number;
+  vote_average: number;
+  title?: string;
+  name?: string;
+  original_title?: string;
+  original_name?: string;
+  overview: string;
+  poster_path: string;
+  backdrop_path: string;
+  release_date?: string;
+  first_air_date?: string;
+  genre_ids: number[];
+  original_language: string;
+  adult: boolean;
+}
 
 export async function generateMetadata() {
   
@@ -31,13 +50,13 @@ export default async function SearchPage({ searchParams }: { searchParams: { que
 
   return (
     <div className="flex flex-row flex-wrap gap-10 justify-center items-stretch mt-8">
-        {results.map((item:any)=>(
+        {results.map((item:BaseMedia)=>(
             <SearchCard 
                 key={item.id}
                 poster={item.poster_path}
-                title={item.title || item.name}
+                title={item.title || item.name || 'Unknown'}
                 id={item.id}
-                date={item.release_date || item.first_air_date}
+                date={item.release_date || item.first_air_date || '2000-01-01'}
                 genre_ids={item.genre_ids}
                 genres={genres}
                 media_type={item.media_type}

@@ -7,9 +7,14 @@ type Props = {
     title: string
 }
 
+type Source = {
+  name: string
+  url: string
+}
+
 export default function MovieView({id, title}:Props){
     
-    const sources = [
+    const sources:Source[] = [
     {
       name: 'Vidfast',
       url: `https://vidfast.pro/movie/${id}`,
@@ -48,7 +53,7 @@ export default function MovieView({id, title}:Props){
 
             </div>
             <div className="inline-flex flex-row gap-4 mt-2">
-                {sources.map((item:any)=>(
+                {sources.map((item:Source)=>(
                 <button key={item.name} className="bg-sky-700 p-2 rounded-lg cursor-pointer" onClick={()=>setSrc(item.url)}>{item.name}</button>
             ))}
             </div>            

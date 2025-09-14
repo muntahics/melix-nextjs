@@ -1,6 +1,26 @@
 import Fetch from "@/app/utilities/Fetch";
 import { NextResponse } from "next/server";
 
+type BaseMedia = {
+  id: number
+  media_type: 'movie' | 'tv' | 'person';
+  popularity: number;
+  vote_count: number;
+  vote_average: number;
+  title?: string;
+  name?: string;
+  original_title?: string;
+  original_name?: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  release_date?: string;
+  first_air_date?: string;
+  genre_ids: number[];
+  original_language: string;
+  adult: boolean;
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get("query");
@@ -15,14 +35,20 @@ export async function GET(req: Request) {
     );
 
     const filtered = results.results.filter(
-      (item: any) => item.media_type === "movie" || item.media_type === "tv"
+      (item: BaseMedia) => item.media_type === "movie" || item.media_type === "tv"
     );
     // console.log(filtered)
     return NextResponse.json(filtered);
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Something went wrong" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+  let message = "Something went wrong";
+
+  if (error instanceof Error) {
+    message = error.message; // safe access
   }
+
+  return NextResponse.json(
+    { error: message },
+    { status: 500 }
+  );
+}
 }

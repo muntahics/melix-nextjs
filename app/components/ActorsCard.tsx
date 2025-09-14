@@ -5,7 +5,7 @@ import type { JSX } from "react"
 type actor = {
     id: number
     name: string
-    profile_path: string
+    profile_path: string | null
     known_for_department: string
 }
 

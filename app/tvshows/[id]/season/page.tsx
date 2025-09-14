@@ -5,6 +5,19 @@ type ParamsProps = {
     params: {id: number}
 }
 
+type Season = {
+  _id: number;
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+}
+
+
+
 export async function generateMetadata({ params }:ParamsProps) {
   const {id} = await params
   const details = await Fetch(`https://api.themoviedb.org/3/tv/${id}`)
@@ -22,13 +35,12 @@ export default async function SeasonPage({params}:ParamsProps):Promise<JSX.Eleme
     
     return(
         <div className="flex flex-row flex-wrap gap-10 justify-center items-stretch mt-8">
-            {seasons.map((item:any)=>(
+            {seasons.map((item:Season)=>(
                 <SeasonCard 
           key={item.id}
           tmdb_id={id}
           poster={item.poster_path}
           title={item.name}
-          id={item.id}
           date={item.air_date}
           season_number = {item.season_number}
           episode_count = {item.episode_count}

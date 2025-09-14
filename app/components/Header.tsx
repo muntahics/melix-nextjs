@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchStore } from "@/app/utilities/Store";
 
 
 
@@ -11,12 +13,18 @@ export default function Header(){
   const [isActiveMenu, setIsActiveMenu] = useState(false)
   const [query, setQuery] = useState("");
   const router = useRouter();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  const setLoading = useSearchStore((state)=>state.setLoading)
+  // const [loading, setLoading] = useState(false);
+  useEffect(()=>{
     if (!query.trim()) return;
-    router.push(`/search?query=${encodeURIComponent(query)}`);
-  };
+    else if(query.length<=2) return;
+    setLoading(true)
+    const debounce = setTimeout(()=>{
+      router.push(`/search?query=${encodeURIComponent(query)}`)
+      setLoading(false)
+    },200)
+    return () => clearTimeout(debounce);
+  },[query,router, setLoading])
 
   const handleMenu = ()=>{
 
@@ -36,18 +44,14 @@ export default function Header(){
 
               <div className="max-sm:hidden flex-row flex justify-end md:justify-center  mr-8 items-center flex-1 gap-5">
                 <div className="hidden sm:block">
-                <form onSubmit={handleSearch} className="mb-4 flex gap-2">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search Movies & TV shows..."
-          className="border bg-slate-600 mt-3 rounded-2xl p-2 w-full"
+          className="border bg-slate-600 rounded-xl px-2 py-1 w-full"
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 mt-3 rounded-2xl">
-        Search
-        </button>
-      </form>
+        
               </div>
                 <Link href="/"><span className="text-white text-xl font-bold block">Home</span></Link>
                 <Link href="/movie"><span className="text-white text-xl font-bold block">Movies</span></Link>
@@ -63,18 +67,13 @@ export default function Header(){
                 <Link href="/movie"><span className="text-white text-xl font-bold block">Movies</span></Link>
                 <Link href="/tvshows"><span className="text-white text-xl font-bold block">Tv-Shows</span></Link>
                 <Link href="/actors"><span className="text-white text-xl font-bold block">Actors</span></Link>
-                <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search Movies & TV shows..."
-          className="border bg-slate-600 mt-3 p-2 w-full mx-2 rounded-2xl"
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 mt-3 mr-2 rounded-2xl">
-        Search
-        </button>
-      </form>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search Movies & TV shows..."
+                  className="border bg-slate-600 rounded-xl px-2 py-1 w-2/3"
+                />
               </div>}
           </nav>
         </header>

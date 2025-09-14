@@ -7,6 +7,41 @@ type ParamsProps={
     params: {id: number}
 }
 
+
+type created_by ={
+    id: number
+credit_id: string
+name:
+string
+gender:
+number
+
+profile_path:
+string
+}
+
+type cast = {
+    id: number,
+    character: string,
+    name: string,
+    profile_path: string,
+}
+
+type castapi = {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string | null;
+    cast_id: number;
+    character: string;
+    credit_id: string;
+    order: number;
+}
+
 export async function generateMetadata({ params }:ParamsProps) {
   const {id} = await params
   const details = await Fetch(`https://api.themoviedb.org/3/tv/${id}`)
@@ -22,11 +57,11 @@ export default async function MovieDetailsPage({params}:ParamsProps): Promise<JS
     const credits = await Fetch(`https://api.themoviedb.org/3/tv/${id}/credits`)
     const imdb_id = await Fetch(`https://api.themoviedb.org/3/tv/${id}/external_ids`)
     const imdbRating = (await GetImdbRating(`https://www.imdb.com/title/${imdb_id.imdb_id}/ratings/`))
-    const directors = details.created_by.slice(0,2).map((item:any) => item.name).join(', ')
+    const directors = details.created_by.slice(0,2).map((item:created_by) => item.name).join(', ')
     
     // console.log(details.seasons)
-    const cast = credits.cast.filter((item:any) => item.profile_path!=null).slice(0,5)
-    .map((member:any) => ({
+    const cast = credits.cast.filter((item:castapi) => item.profile_path!=null).slice(0,5)
+    .map((member:cast) => ({
         id: member.id,
         character: member.character,
         name: member.name,
@@ -41,7 +76,6 @@ export default async function MovieDetailsPage({params}:ParamsProps): Promise<JS
             title={details.name}
             seasons={details.number_of_seasons}
             episodes={details.number_of_episodes}
-            backdrop={details.backdrop_path}
             poster={details.poster_path}
             genres={details.genres}
             imdb={imdb_id.imdb_id}

@@ -8,9 +8,14 @@ type Props = {
     episode_number:number
 }
 
+type Source = {
+  name: string
+  url: string
+}
+
 export default function EpisodeView({id, season_number, episode_number}:Props){
     
-    const sources = [
+    const sources: Source[] = [
     {
       name: 'Vidfast',
       url: `https://vidfast.pro/tv/${id}/${season_number}/${episode_number}`,
@@ -49,7 +54,7 @@ export default function EpisodeView({id, season_number, episode_number}:Props){
 
             </div>
             <div className="inline-flex flex-row gap-4 mt-2">
-                {sources.map((item:any)=>(
+                {sources.map((item:Source)=>(
                 <button key={item.name} className="bg-sky-700 p-2 rounded-lg cursor-pointer" onClick={()=>setSrc(item.url)}>{item.name}</button>
             ))}
             </div>            

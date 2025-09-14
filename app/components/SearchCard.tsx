@@ -1,6 +1,8 @@
+"use client";
 import Image from "next/image"
 import Link from "next/link"
 import type { JSX } from "react"
+import { useSearchStore } from "@/app/utilities/Store"
 
 
 type genre = {
@@ -10,9 +12,10 @@ type genre = {
 
 export default function SearchCard({poster, title, id, date, genre_ids, genres, media_type}:{poster:string, title:string, id:number, date:string, genre_ids:number[], genres: genre[], media_type:string}):JSX.Element{
     
+    const loading = useSearchStore((state)=>state.loading)
    
-    let genreNames: string[] = []
-    const getGenres =    ()=>(genres.map((genre:genre)=>genre_ids.map((item)=>item===genre.id?genreNames.push(genre.name):null)))
+    const genreNames: string[] = []
+    const getGenres =    ()=>(genres.map((genre:genre)=>genre_ids?.map((item)=>item===genre.id?genreNames.push(genre.name):null)))
     getGenres()
 
     function getOrdinal(n:number) {
@@ -31,9 +34,9 @@ const year = rdate.getFullYear();
 const humanReadableRelease = `${day} ${month}, ${year}`;
     
     return(
-        <div className="rounded-2xl border-4 border-gray-500 px-2 py-2 text-amber-50 shadow-2xl hover:transition-transform transition-discrete duration-300 ease-in-out delay-150 hover:scale-105">
+        <div className={`rounded-2xl ${loading ? "animate-shake" : ""} border-4 border-gray-500 px-2 py-2 text-amber-50 shadow-2xl hover:transition-transform transition-discrete duration-300 ease-in-out delay-150 hover:scale-105`}>
             <Link href={media_type=='movie'?`/movie/${id}`:`/tvshows/${id}`}>
-                <Image className="rounded-2xl" src={poster===null?`/placehold.png`:`https://image.tmdb.org/t/p/w500/${poster}`} alt="name" width={250} height={300}></Image>
+                <Image className="rounded-2xl" src={poster===null||undefined?`/placehold.png`:`https://image.tmdb.org/t/p/w500/${poster}`} alt="name" width={250} height={300}></Image>
                 <h2 className="mt-2 block text-center max-w-[250px] text-lg">{title}</h2> 
                 <h3 className="text-center max-w-[250px]">{humanReadableRelease} | {genreNames.join(', ')}</h3>
                 <h3 className="text-center max-w-[250px] uppercase text-gray-300 text-sm">{media_type}</h3>

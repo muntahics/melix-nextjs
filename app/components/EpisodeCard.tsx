@@ -5,7 +5,7 @@ import type { JSX } from "react"
 
 
 
-export default function EpisodeCard({tmdb_id, poster, title, date,season_number, episode_number, current_ep}:{tmdb_id:number, poster:string, title:string, date:string, season_number:number, episode_number:number, current_ep?:number}):JSX.Element{
+export default function EpisodeCard({tmdb_id, poster, title, date,season_number, episode_number}:{tmdb_id:number, poster:string, title:string, date:string, season_number:number, episode_number:number}):JSX.Element{
     
    
 

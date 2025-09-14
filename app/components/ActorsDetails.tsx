@@ -3,20 +3,32 @@ import Link from "next/link"
 import type { JSX } from "react"
 import FormatDate from "../utilities/FormatDate"
 
+type credits = {
+    id: number;
+    title?: string ;       // for movies
+    name?: string;        // for TV shows
+    media_type: "movie" | "tv";
+    popularity: number;
+    character?: string;
+    job?: string;
+    release_date?: string;
+    first_air_date?: string;
+    poster_path?: string | null;  
+}
+
 type Props = {
     birthday: string
     deathday?: string
-    id: number
     name: string
     also_known_as: string[]
     place_of_birth: string
     profile_path: string
     biography: string
-    known_for: any
+    known_for: credits[]
     instaId:string
 }
 
-export default function ActorsDetails({birthday, deathday, id, name, also_known_as, place_of_birth, profile_path, biography, known_for, instaId}:Props):JSX.Element{
+export default function ActorsDetails({birthday, deathday, name, also_known_as, place_of_birth, profile_path, biography, known_for, instaId}:Props):JSX.Element{
     
     const currentYear = new Date().getFullYear()
     //  console.log(birthday)
@@ -48,14 +60,14 @@ export default function ActorsDetails({birthday, deathday, id, name, also_known_
             <div className="inline-flex flex-row flex-wrap gap-10 border-3 rounded-xl border-gray-500 justify-center items-start p-4">
                 <h1 className="self-start w-full">Known For:</h1>
                 {
-                    known_for.map((item:any) => (
+                    known_for.map((item:credits) => (
                         <div key={Math.random().toString(36)} className="flex flex-col gap-2">
                             <Link href={item.media_type===`movie`?`/movie/${item.id}`:`/tvshows/${item.id}`}>
                                 <div className="relative group w-[170px] cursor-pointer">
                                     <Image
                                       key={item.id}
                                       src={item.poster_path===null?`/placehold.png`:`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
-                                      alt={item.title || item.name}
+                                      alt={item.title || item.name || 'Unknown Title'}
                                       width={170}
                                       height={170}
                                       className="rounded-2xl"

@@ -4,7 +4,7 @@ import Fetch from "@/app/utilities/Fetch";
 
 export async function generateMetadata() {
     return {
-    title: `Movies Page`,
+    title: `Movies`,
     description: `Movies Details`
   };
 }

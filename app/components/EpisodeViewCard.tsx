@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import type { JSX } from "react"
-import { useState } from "react"
+
 
 
 
@@ -27,7 +27,7 @@ const year = rdate.getFullYear();
 
 const humanReadableRelease = `${day} ${month}, ${year}`;
 
-const [play,isPlay] = useState("")
+
 
 
 // console.log(episode_number==current_ep)

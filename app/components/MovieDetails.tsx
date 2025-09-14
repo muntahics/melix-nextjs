@@ -20,7 +20,6 @@ type cast = {
 type MovieDetailsProps = {
     id: number
     title: string
-    backdrop: string
     poster: string
     genres: genre[]
     imdb: number
@@ -48,7 +47,7 @@ type MovieDetailsProps = {
     directors: string
 }
 
-export default function MovieDetails({id, title,backdrop,poster,genres, imdb, imdbRating, overview, production_companies, production_countries, release_date, languages, runtime, cast, directors}:MovieDetailsProps):JSX.Element{
+export default function MovieDetails({id, title,poster,genres, imdb, imdbRating, overview, production_companies, production_countries, release_date, languages, runtime, cast, directors}:MovieDetailsProps):JSX.Element{
     
 
     const genreNames = genres.map(item=>item.name).join(' | ')
@@ -93,7 +92,7 @@ const humanReadableRelease = `${day} ${month}, ${year}`;
             <div className="inline-flex flex-row flex-wrap gap-10 border-3 rounded-xl border-gray-500 justify-center items-start p-4">
                 <h1 className="self-start w-full">Cast:</h1>
                 {
-                    cast.map((item:any) => (
+                    cast.map((item:cast) => (
                         <div key={item.id} className="flex flex-col gap-2">
                             <Link href={`/actors/${item.id}`}>
                                 <div className="relative group w-[170px] cursor-pointer">

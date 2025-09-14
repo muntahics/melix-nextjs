@@ -7,6 +7,42 @@ type ParamsProps={
     params: {id: number}
 }
 
+type cast = {
+    id: number,
+    character: string,
+    name: string,
+    profile_path: string,
+}
+
+type castapi = {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string | null;
+    cast_id: number;
+    character: string;
+    credit_id: string;
+    order: number;
+}
+
+type crew = {
+    adult: boolean;
+    gender: number;
+    id: number;
+    known_for_department: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string | null;
+    credit_id: string;
+    department: string;
+    job: string;
+}
+
 export async function generateMetadata({ params }:ParamsProps) {
   const {id} = await params
   const details = await Fetch(`https://api.themoviedb.org/3/movie/${id}`)
@@ -21,10 +57,10 @@ export default async function MovieDetailsPage({params}:ParamsProps): Promise<JS
     const details = await Fetch(`https://api.themoviedb.org/3/movie/${id}`)
     const credits = await Fetch(`https://api.themoviedb.org/3/movie/${id}/credits`)
     const imdbRating = (await GetImdbRating(`https://www.imdb.com/title/${details.imdb_id}/ratings/`))
-    const directors = credits.crew.filter((member:any) => member.job === 'Director').map((item:any) => item.name).join(', ')
+    const directors = credits.crew.filter((member:crew) => member.job === 'Director').map((item:crew) => item.name).join(', ')
     // console.log(directors)
-    const cast = credits.cast.filter((item:any) => item.order<=5)
-    .map((member:any) => ({
+    const cast = credits.cast.filter((item:castapi) => item.order<=5)
+    .map((member:cast) => ({
         id: member.id,
         character: member.character,
         name: member.name,
@@ -37,7 +73,6 @@ export default async function MovieDetailsPage({params}:ParamsProps): Promise<JS
             key={details.id}
             id={details.id} 
             title={details.title}
-            backdrop={details.backdrop_path}
             poster={details.poster_path}
             genres={details.genres}
             imdb={details.imdb_id}

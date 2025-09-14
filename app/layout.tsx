@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
+import RegisterSW from "./register-sw";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +15,7 @@ import "./globals.css";
 // });
 
 export const metadata: Metadata = {
-  title: "Home Page",
+  title: "Melix",
   description: "Movies & Tv Shows",
 };
 
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-slate-900  text-amber-50">
+        <RegisterSW />
         <Header></Header>
           {children}
 

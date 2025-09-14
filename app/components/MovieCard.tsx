@@ -11,7 +11,7 @@ type genre = {
 export default function MovieCard({poster, title, id, date, genre_ids, genres}:{poster:string, title:string, id:number, date:string, genre_ids:number[], genres: genre[]}):JSX.Element{
     
    
-    let genreNames: string[] = []
+    const genreNames: string[] = []
     const getGenres =    ()=>(genres.map((genre:genre)=>genre_ids.map((item)=>item===genre.id?genreNames.push(genre.name):null)))
     getGenres()
 
