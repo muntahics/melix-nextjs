@@ -4,6 +4,7 @@ const fs = require("fs/promises");
 
 const PROJECT_DIR = path.resolve(__dirname);
 const REBUILD_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
+const PORT = process.argv[2] || 3000;
 
 let serverProcess = null;
 
@@ -33,7 +34,7 @@ async function startServer() {
     await runCommand("npm", ["run", "build"]);
 
     // Start
-    serverProcess = spawn("npm", ["run", "start"], {
+    serverProcess = spawn("npm", ["run", "start", "--", "-p", String(PORT)], {
       cwd: PROJECT_DIR,
       stdio: "ignore",
       shell: true,
