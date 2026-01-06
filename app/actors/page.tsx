@@ -31,25 +31,25 @@ type actor = {
     known_for_department: string;
     name: string;
     popularity: number;
-    profile_path: string | null;    
+    profile_path: string | null;
 }
 
 
 export async function generateMetadata() {
     return {
-    title: `Actors`,
-    description: `Tv-Show Details`
-  };
+        title: `Actors`,
+        description: `Tv-Show Details`
+    };
 }
 
-export default async function ActorsPage():Promise<JSX.Element>{
+export default async function ActorsPage(): Promise<JSX.Element> {
     const details = await Fetch(`https://api.themoviedb.org/3/person/popular`)
     const actors = details.results
     // console.log(actors)
-    return(
+    return (
         <div className="flex flex-row flex-wrap gap-10 justify-center items-stretch mt-8">
-            {actors.map((item:actor)=>(
-                <ActorsCard 
+            {actors.map((item: actor) => (
+                <ActorsCard
                     key={item.id}
                     id={item.id}
                     name={item.name}
