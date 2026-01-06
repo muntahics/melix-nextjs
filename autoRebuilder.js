@@ -13,7 +13,6 @@ function runCommand(cmd, args = []) {
     const proc = spawn(cmd, args, {
       cwd: PROJECT_DIR,
       stdio: "ignore",
-      shell: true,
     });
 
     proc.on("close", (code) => {
@@ -37,7 +36,6 @@ async function startServer() {
     serverProcess = spawn("npm", ["run", "start", "--", "-p", String(PORT)], {
       cwd: PROJECT_DIR,
       stdio: "ignore",
-      shell: true,
       detached: true,
     });
   } catch {
