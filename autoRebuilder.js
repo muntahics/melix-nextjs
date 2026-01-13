@@ -45,14 +45,14 @@ function startServer() {
   killServerSync();
 
   log("Deleting .next folder...");
-  const nextPath = path.join(PROJECT_DIR, ".next");
-  try {
-    if (fs.existsSync(nextPath)) {
-      fs.rmSync(nextPath, { recursive: true, force: true });
-    }
+  const deleteResult = spawnSync("rm", ["-rf", ".next"], {
+    cwd: PROJECT_DIR,
+    shell: true,
+  });
+  if (deleteResult.status === 0) {
     log("✓ .next folder deleted");
-  } catch (err) {
-    log(`Warning: Could not delete .next: ${err.message}`);
+  } else {
+    log("Warning: Could not delete .next folder");
   }
 
   log("Building Next.js app...");
