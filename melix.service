@@ -1,0 +1,21 @@
+[Unit]
+Description=Melix Next.js Application
+After=network.target
+
+[Service]
+Type=simple
+User=muntahi
+WorkingDirectory=/home/muntahi/Downloads/melix-nextjs
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/usr/bin/node /home/muntahi/Downloads/melix-nextjs/autoRebuilder.js 3000
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=melix
+
+[Install]
+WantedBy=multi-user.target

@@ -1,6 +1,6 @@
-const { spawn, execSync } = require("child_process");
+const { spawn, spawnSync } = require("child_process");
 const path = require("path");
-const fs = require("fs/promises");
+const fs = require("fs");
 
 const PROJECT_DIR = path.resolve(__dirname);
 const REBUILD_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours
@@ -11,33 +11,52 @@ let rebuildTimer = null;
 
 function log(message) {
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${message}`);
+  const msg = `[${timestamp}] ${message}`;
+  console.log(msg);
+  // Force flush
+  if (process.stdout.write) process.stdout.write("");
 }
 
-function runCommandSync(cmd, args = []) {
+function runCommand(cmd, args = []) {
   log(`Running: ${cmd} ${args.join(" ")}`);
-  try {
-    execSync(`${cmd} ${args.join(" ")}`, {
-      cwd: PROJECT_DIR,
-      stdio: "inherit",
-    });
+
+  const result = spawnSync(cmd, args, {
+    cwd: PROJECT_DIR,
+    stdio: "inherit",
+    shell: true,
+  });
+
+  if (result.error) {
+    log(`✗ ${cmd} error: ${result.error.message}`);
+    return false;
+  }
+
+  if (result.status === 0) {
     log(`✓ ${cmd} completed successfully`);
     return true;
-  } catch (err) {
-    log(`✗ ${cmd} failed: ${err.message}`);
+  } else {
+    log(`✗ ${cmd} failed with exit code ${result.status}`);
     return false;
   }
 }
 
-async function startServer() {
+function startServer() {
   // Kill any existing server first
-  await killServer();
+  killServerSync();
 
   log("Deleting .next folder...");
-  await fs.rm(path.join(PROJECT_DIR, ".next"), { recursive: true, force: true });
+  const nextPath = path.join(PROJECT_DIR, ".next");
+  try {
+    if (fs.existsSync(nextPath)) {
+      fs.rmSync(nextPath, { recursive: true, force: true });
+    }
+    log("✓ .next folder deleted");
+  } catch (err) {
+    log(`Warning: Could not delete .next: ${err.message}`);
+  }
 
   log("Building Next.js app...");
-  const buildSuccess = runCommandSync("npm", ["run", "build"]);
+  const buildSuccess = runCommand("npm", ["run", "build"]);
 
   if (!buildSuccess) {
     log("✗ Build failed, retrying in 30 seconds...");
@@ -79,7 +98,7 @@ async function startServer() {
   }, REBUILD_INTERVAL);
 }
 
-async function killServer() {
+function killServerSync() {
   if (rebuildTimer) {
     clearTimeout(rebuildTimer);
     rebuildTimer = null;
@@ -91,36 +110,34 @@ async function killServer() {
 
   log(`Stopping server (PID: ${serverProcess.pid})...`);
 
-  return new Promise((resolve) => {
-    const timeout = setTimeout(() => {
-      if (serverProcess && !serverProcess.killed) {
-        log("Force killing server...");
-        serverProcess.kill("SIGKILL");
-      }
-      resolve();
-    }, 5000);
-
-    serverProcess.once("exit", () => {
-      clearTimeout(timeout);
-      log("✓ Server stopped");
-      serverProcess = null;
-      resolve();
-    });
-
+  try {
     serverProcess.kill("SIGTERM");
-  });
+    // Give it a moment
+    const start = Date.now();
+    while (!serverProcess.killed && Date.now() - start < 5000) {
+      // busy wait (not ideal but simple)
+    }
+    if (!serverProcess.killed) {
+      log("Force killing server...");
+      serverProcess.kill("SIGKILL");
+    }
+    log("✓ Server stopped");
+  } catch (err) {
+    log(`Warning during kill: ${err.message}`);
+  }
+  serverProcess = null;
 }
 
 // Handle graceful shutdown
-process.on("SIGINT", async () => {
+process.on("SIGINT", () => {
   log("Received SIGINT, shutting down...");
-  await killServer();
+  killServerSync();
   process.exit(0);
 });
 
-process.on("SIGTERM", async () => {
+process.on("SIGTERM", () => {
   log("Received SIGTERM, shutting down...");
-  await killServer();
+  killServerSync();
   process.exit(0);
 });
 
